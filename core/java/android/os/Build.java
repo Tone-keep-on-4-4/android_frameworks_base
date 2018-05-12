@@ -1084,6 +1084,8 @@ public class Build {
 
         final String system = SystemProperties.get("ro.system.build.fingerprint");
         final String vendor = SystemProperties.get("ro.vendor.build.fingerprint");
+        final String odm_expected = SystemProperties.get("ro.odm.expect.version");
+        final String odm = SystemProperties.get("ro.odm.version");
         final String bootimage = SystemProperties.get("ro.bootimage.build.fingerprint");
         final String requiredBootloader = SystemProperties.get("ro.build.expect.bootloader");
         final String currentBootloader = SystemProperties.get("ro.bootloader");
@@ -1099,6 +1101,14 @@ public class Build {
             if (!Objects.equals(system, vendor)) {
                 Slog.e(TAG, "Mismatched fingerprints; system reported " + system
                         + " but vendor reported " + vendor);
+                return false;
+            }
+        }
+
+        if (!TextUtils.isEmpty(odm_expected)) {
+            if (!Objects.equals(odm_expected, odm)) {
+                Slog.e(TAG, "Mismatched fingerprints; system reported " + odm_expected
+                        + " but odm reported " + odm);
                 return false;
             }
         }
